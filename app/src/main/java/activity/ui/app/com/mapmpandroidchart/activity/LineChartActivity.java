@@ -3,6 +3,8 @@ package activity.ui.app.com.mapmpandroidchart.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,15 +26,16 @@ import java.util.Random;
 
 import activity.ui.app.com.mapmpandroidchart.R;
 
-public class LineChartActivity extends AppCompatActivity {
+public class LineChartActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private LineChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart);
-        LineChart chart = (LineChart) findViewById(R.id.line_chart);
-
+        chart = (LineChart) findViewById(R.id.line_chart);
+        findViewById(R.id.line_chart_rest_tv).setOnClickListener(this);
         ArrayList<String> xVals = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             xVals.add((i + 1) + "月");
@@ -51,9 +54,11 @@ public class LineChartActivity extends AppCompatActivity {
         setX(xAxis);
         YAxis yAxis = chart.getAxisLeft();
         setY(yAxis);
+
         Description desc = new Description();
-        desc.setText("123");
+        desc.setText("1234");
         chart.setDescription(desc);
+        //设置没有数据时的显示文案
         chart.setNoDataText("没有数据");
         //不显示右边的坐标
         chart.getAxisRight().setEnabled(false);
@@ -61,6 +66,18 @@ public class LineChartActivity extends AppCompatActivity {
         //不显示LineDataSet的标签
         lgend.setEnabled(false);
         chart.setOnChartValueSelectedListener(selectedListener);
+        //
+        //chart.setRendererLeftYAxis(1);
+        chart.setExtraLeftOffset(10);
+        //设置图表外，布局内显示的偏移量
+        // chart.setExtraOffsets(20, 30, -10, 0);
+        //将左边的边放到指定的位置，参数是（float xindex）
+        chart.moveViewToX(20);
+        //边框是否显示
+        chart.setDrawBorders(false);
+        //上面的边框颜色
+        chart.setBorderColor(0xffff0000);
+        chart.setMaxVisibleValueCount(20);
     }
 
     private LineData getDataSet1() {
@@ -98,7 +115,7 @@ public class LineChartActivity extends AppCompatActivity {
         //dataSet.setCircleSize(20);
         //true:线条和底部形成闭环
         dataSet.setDrawFilled(false);
-        //不会显示折现上的value
+        //不会显示折点上的value
         dataSet.setDrawValues(false);
         //线条和底部形成闭环区内的颜色
         //dataSet.setFillColor(0xffff3333);
@@ -133,10 +150,16 @@ public class LineChartActivity extends AppCompatActivity {
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(formatter);
         //设置标签数量
-        xAxis.setLabelCount(13);
+        xAxis.setLabelCount(14);
         //设置标签旋转角度
         // xAxis.setLabelRotationAngle(45);
-
+        //避免第一个和最后一个裁剪
+        xAxis.setAvoidFirstLastClipping(true);
+        // xAxis.setSpaceBetweenLabels(50);
+        xAxis.resetAxisMaximum();
+        xAxis.resetAxisMinimum();
+        xAxis.setAxisMaximum(13);    //设置X轴坐标最大为多少
+        xAxis.setAxisMinimum(0);    //设置X轴坐标最小为多少
     }
 
     private void setY(YAxis yAxis) {
@@ -150,6 +173,12 @@ public class LineChartActivity extends AppCompatActivity {
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         //yAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         //  yAxis.setValueFormatter(formatter);
+        yAxis.resetAxisMaximum();
+        yAxis.resetAxisMinimum();
+        yAxis.setAxisMaximum(13);    //设置Y轴坐标最大为多少
+        yAxis.setAxisMinimum(0);    //设置Y轴坐标最小为多少
+        yAxis.setLabelCount(20);
+
     }
 
     private LineDataSet getDataSet2() {
@@ -166,7 +195,7 @@ public class LineChartActivity extends AppCompatActivity {
 
     //设置x或y轴基线的标签
     final String[] quarters = new String[]{"1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "10", "11", "12"};
+            "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
     IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
@@ -197,4 +226,13 @@ public class LineChartActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onClick(View v) {
+        Log.e("-------------", "===============");
+        LineData data = chart.getData();
+        data.clearValues();
+        chart.setData(getDataSet1());
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
 }

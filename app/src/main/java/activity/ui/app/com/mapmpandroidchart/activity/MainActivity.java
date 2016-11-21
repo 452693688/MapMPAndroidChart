@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.type_1_btn).setOnClickListener(this);
         findViewById(R.id.type_2_btn).setOnClickListener(this);
-
+        findViewById(R.id.type_3_btn).setOnClickListener(this);
     }
 
     @Override
@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.type_2_btn:
                 //折线
                 cls = LineChartActivity.class;
+                break;
+            case R.id.type_3_btn:
+                cls = TestLineChartActivity.class;
                 break;
         }
         it.setClass(this, cls);
