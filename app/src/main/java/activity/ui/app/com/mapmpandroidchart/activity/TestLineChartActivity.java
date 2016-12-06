@@ -180,19 +180,25 @@ public class TestLineChartActivity extends AppCompatActivity {
 
     private void setChart(ChartTest bean, int lienSize) {
         chart.setData(getDataSet(bean, lienSize));
+        //chart.setData(null);
         chart.animateY(3000);
+        chart.setNoDataText("没有数据");
+
+        // chart.setExtraLeftOffset(5);
+        // chart.setExtraRightOffset(50);
         //设置折线的描述的样式（默认在图表的左下角）
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
         setXY(xAxis, yAxis);
         Description desc = new Description();
-        desc.setText("");
+        desc.setText("日期");
         chart.setDescription(desc);
         //不显示右边的坐标
         chart.getAxisRight().setEnabled(false);
         Legend lgend = chart.getLegend();
         //不显示LineDataSet的标签
         lgend.setEnabled(false);
+
     }
 
     private LineData getDataSet(ChartTest bean, int lienSize) {
@@ -229,11 +235,15 @@ public class TestLineChartActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
-        xAxis.setLabelCount(13);
+        // xAxis.setLabelCount(13);
+        // Typeface mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
         xAxis.setAvoidFirstLastClipping(true);
-        xAxis.setAxisMaximum(9);
+        xAxis.setAxisMaximum(39);
         xAxis.setAxisMinimum(0);
-        xAxis.setLabelCount(9);
+        xAxis.setLabelCount(14);
+        xAxis.setDrawLabels(true);
+
+        //xAxis.setTypeface(mTf);
         //---------------
         yAxis.setDrawGridLines(false);
         yAxis.setDrawLimitLinesBehindData(false);
@@ -244,15 +254,20 @@ public class TestLineChartActivity extends AppCompatActivity {
 
 
     //设置x或y轴基线的标签
-    final String[] quarters = new String[]{"0", "1", "2", "3", "4",
-            "5", "6", "7","（ 日期 ） ", "", "10", "11", "12"};
-
+    final String[] quarters = new String[]{"1", "2", "3", "4",
+            "5", "6", "7", "8", "9", "10", "11", "12",
+            "13", "14", "15", "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25", "26", "27", "28",
+            "29", "30", "31", "32", "33", "34", "35", "36"};
+    final String[] quarters2 = new String[]{ " ","0", "3", "6", "9", "12",
+            "15", "18", "21", "24", "27", "30", "时","间．．"};
     IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            Log.e("=====",""+value);
-            return quarters[(int) value];
+            Log.e("=====", "" + value);
+            int index = (int) value / 3;
+            return quarters2[index];
         }
 
         // we don't draw numbers, so no decimal digits needed

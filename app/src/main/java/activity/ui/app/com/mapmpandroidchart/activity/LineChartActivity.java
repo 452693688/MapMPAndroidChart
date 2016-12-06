@@ -76,8 +76,17 @@ public class LineChartActivity extends AppCompatActivity implements View.OnClick
         //边框是否显示
         chart.setDrawBorders(false);
         //上面的边框颜色
-        chart.setBorderColor(0xffff0000);
-        chart.setMaxVisibleValueCount(20);
+        //chart.setBorderColor(0xffff0000);
+        //chart.setMaxVisibleValueCount(20);
+        //chart.setTouchEnabled(true); // 设置是否可以触摸
+        //chart.setDragEnabled(true);// 是否可以拖拽
+
+        // chart.setScaleEnabled(false);// 是否可以缩放 x和y轴, 默认是true
+        //chart.setScaleXEnabled(true); //是否可以缩放 仅x轴
+        //chart.setScaleYEnabled(false); //是否可以缩放 仅y轴
+        chart.setVisibleXRangeMaximum(9);  //一个界面显示多少个点，其他点可以通过滑动看到
+        chart.setVisibleXRangeMinimum(9);  //一个界面最少显示多少个点，放大后最多 放大到 剩多少 个点
+        chart.moveViewToX(0);  //将左边的边放到指定的位置，参数是（float xindex）
     }
 
     private LineData getDataSet1() {
@@ -127,20 +136,6 @@ public class LineChartActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    //x和y通用
-    public void AxisBase(AxisBase axisBase) {
-        axisBase.setEnabled(true);     //是否显示X坐标轴 及 对应的刻度竖线，默认是true
-        axisBase.setDrawAxisLine(true); //是否绘制坐标轴的线，即含有坐标的那条线，默认是true
-        axisBase.setDrawGridLines(false); //是否显示X坐标轴上的刻度竖线，默认是true
-        axisBase.setDrawLabels(true); //是否显示X坐标轴上的刻度，默认是true
-        axisBase.setTextColor(Color.rgb(145, 13, 64)); //X轴上的刻度的颜色
-        axisBase.setTextSize(5); //X轴上的刻度的字的大小 单位dp
-//      xAxis.setTypeface(Typeface tf); //X轴上的刻度的字体
-        axisBase.setGridColor(Color.rgb(145, 13, 64)); //X轴上的刻度竖线的颜色
-
-        // xAxis.setGridLineWidth(1); //X轴上的刻度竖线的宽 float类型
-        // xAxis.enableGridDashedLine(40, 3, 0); //虚线表示X轴上的刻度竖线(float lineLength, float spaceLength, float phase)三个参数，1.线
-    }
 
     private void setX(XAxis xAxis) {
         xAxis.setDrawGridLines(false); //是否显示X坐标轴上的刻度竖线，默认是true
@@ -150,15 +145,15 @@ public class LineChartActivity extends AppCompatActivity implements View.OnClick
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(formatter);
         //设置标签数量
-        xAxis.setLabelCount(14);
+        xAxis.setLabelCount(40);
+        //ture,设置x轴起点和终点label不超出屏幕
+        xAxis.setAvoidFirstLastClipping(false);
         //设置标签旋转角度
         // xAxis.setLabelRotationAngle(45);
-        //避免第一个和最后一个裁剪
-        xAxis.setAvoidFirstLastClipping(true);
         // xAxis.setSpaceBetweenLabels(50);
         xAxis.resetAxisMaximum();
         xAxis.resetAxisMinimum();
-        xAxis.setAxisMaximum(13);    //设置X轴坐标最大为多少
+        xAxis.setAxisMaximum(50);    //设置X轴坐标最大为多少
         xAxis.setAxisMinimum(0);    //设置X轴坐标最小为多少
     }
 
@@ -173,18 +168,18 @@ public class LineChartActivity extends AppCompatActivity implements View.OnClick
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         //yAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         //  yAxis.setValueFormatter(formatter);
-        yAxis.resetAxisMaximum();
-        yAxis.resetAxisMinimum();
-        yAxis.setAxisMaximum(13);    //设置Y轴坐标最大为多少
-        yAxis.setAxisMinimum(0);    //设置Y轴坐标最小为多少
-        yAxis.setLabelCount(20);
+        //yAxis.resetAxisMaximum();
+        //yAxis.resetAxisMinimum();
+        //yAxis.setAxisMaximum(50);    //设置Y轴坐标最大为多少
+        //yAxis.setAxisMinimum(0);    //设置Y轴坐标最小为多少
+        //yAxis.setLabelCount(20);
 
     }
 
     private LineDataSet getDataSet2() {
         ArrayList<Entry> yVals = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 50; i++) {
             float profix = random.nextFloat();
             yVals.add(new Entry(profix, i));
         }
@@ -195,6 +190,14 @@ public class LineChartActivity extends AppCompatActivity implements View.OnClick
 
     //设置x或y轴基线的标签
     final String[] quarters = new String[]{"1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"
+            , "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+            "31", "32", "33", "34", "35",
+            "36", "37", "38", "39", "40", "41", "42", "43", "44", "45",
+            "46", "47", "48", "49", "50",
+            "51", "52", "53", "54", "55", "11", "12", "13", "14", "15",
+            "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
     IAxisValueFormatter formatter = new IAxisValueFormatter() {

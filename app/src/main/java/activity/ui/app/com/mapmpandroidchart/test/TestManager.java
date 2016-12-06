@@ -17,11 +17,14 @@ public class TestManager {
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
             ArrayList<Entry> entrys = new ArrayList<Entry>();
-            for (int j = 0; j < 7; j++) {
-                Entry entry = new Entry();
-                entry.setX(j + 1);
-                entry.setY( random.nextFloat());
-                entrys.add(entry);
+            for (int j = 0; j < 31; j++) {
+                 if (j==0||j==5||j==9||j==30){
+                     Entry entry = new Entry();
+                     entry.setX(j +3);
+                     entry.setY(random.nextFloat());
+                     entrys.add(entry);
+                 }
+
             }
             test.lines.add(entrys);
         }
